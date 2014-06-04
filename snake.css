@@ -1,1 +1,22 @@
-dfsd
+#game {
+	width: 500px;
+	height: 700px;
+}
+#gameBoard {
+	height: 500px;
+	width: inherit;
+	background-color: #ffcb05;
+	border: 8px groove #00274c
+}
+#gameInfo {
+	height: 200px;
+	width: inherit;
+	background-color: #ffcb05;
+	border: 8px groove #00274c;
+	border-top: none;
+	float: bottom;
+	text-align: center;
+	font-family: "Papyrus";
+	font-size: 24px;
+	font-weight: bold;
+}
