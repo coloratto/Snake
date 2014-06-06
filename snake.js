@@ -11,7 +11,10 @@ function field()
 {
 	this.drawSomething = function(class, x, y)
 	{
-
+		var $newThing = $().addClass(class);
+		$newThing.css("left",x+"px");
+		$newThing.css("top",y+"px");
+		$("#gameBoard").append($newThing);
 	}
 }
 
@@ -24,7 +27,7 @@ function snake() {
 	//or
 	//this.blahblah = dkjfskd;
 }
-
+dfksjdfks
 /*function drawSnake() {
 	for(var i=0; i<snake.length; ++i)
 	{
