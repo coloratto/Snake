@@ -31,16 +31,16 @@
 	background-color: #00274c;
 }
 
-.snakePart {
-	height: 10px;
-	width: 10px;
+.bodyPart {
+	height: 25px;
+	width: 25px;
 	position: absolute;
 	background-color: #00274c;
 }
 
 .food {
-	height: 10px;
-	width: 10px;
+	height: 25px;
+	width: 25px;
 	position: absolute;
 	background-color: #00274c;
 }
