@@ -55,4 +55,14 @@
 .startMessage {
 	font-family: "Papyrus";
 	text-align: center;
+	position: fixed;
+	left: 100px;
+}
+.speedForm {
+	opacity: 1;
+	position: absolute;
+	top: 50px;
+	left: 165px;
+	z-index: 1;
+	display: none;
 }

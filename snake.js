@@ -181,6 +181,10 @@ function createFood()
 }
 var directionToMoveIn;
 var beginning;
+var fast = 75;
+var medium = 100;
+var slow = 125;
+var speed = slow;
 function initializeGame()
 {
 	playingField = new field();
@@ -189,6 +193,22 @@ function initializeGame()
 	createFood();
 	directionToMoveIn = right;
 	beginning = true;
+	$('input[type=radio][name=speed]').on('change', function() {
+		switch($(this).val())
+		{
+			case 'slow':
+				speed = slow;
+				break;
+			case 'medium':
+				speed = medium;
+				break;
+			case 'fast':
+				speed = fast;
+				break;
+			default:
+				speed = slow;
+		}
+	});
 }
 function endGame()
 {
@@ -203,14 +223,17 @@ function updateScore()
 function showStartScreen()
 {
 	$("#gameBoard").css("opacity","0.5");
-	$("#gameBoard").append($("<div>Press start to begin!</div>").addClass("startMessage"));
+	$("#gameBoard").append($("<div>Select a speed and press space to begin!</div>").addClass("startMessage"));
+	$(".speedForm").css("display","initial");
 }
 function removeStartScreen()
 {
 	$("#gameBoard").css("opacity", "");
 	$(".startMessage").css("display", "none");
+	$(".speedForm").css("display","none");
 }
 var previousDirection;
+
 $(document).ready(function(){
 	showStartScreen();
 	initializeGame();
@@ -223,6 +246,7 @@ $(document).ready(function(){
 		{
 			if(directionToMoveIn === space)
 			{
+				console.log(speed);
 				beginning = false;
 				directionToMoveIn = right;
 				removeStartScreen();
@@ -270,7 +294,7 @@ $(document).ready(function(){
 			updateScore();
 			createFood();
 		}
-		setTimeout(gameLoop, 190);
+		setTimeout(gameLoop, speed);
 	}
 	gameLoop();
 });
