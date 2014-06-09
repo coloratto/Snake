@@ -2,11 +2,12 @@ var left=37;
 var up=38;
 var right=39;
 var down=40;
-var field;
-var snake;
-var eatenItemsCount = 0;
+var space = 32;
+var playingField;
+var playingSnake;
 var oneStep = 1;
 var currentFoodItem = {};
+var bestScore = 0;
 
 function bodyPart(x, y, direction)
 {
@@ -18,6 +19,7 @@ function snake()
 {
 	this.bodyParts = [];
 	this.bodyParts.push(new bodyPart(4,4,right));
+	this.numItemsEaten = 0;
 	this.getHead = function()
 	{
 		return this.bodyParts[0];
@@ -45,7 +47,6 @@ function snake()
 		{
 			this.bodyParts.push(new bodyPart(currentTail.x, currentTail.y-oneStep, currentTail.direction)); 
 		}
-		++eatenItemsCount;
 	};
 	this.move = function(newDirection)
 	{
@@ -76,12 +77,13 @@ function snake()
 	this.ateFood = function(foodX, foodY)
 	{
 		var currentHead = this.getHead();
-		console.log(currentHead.x);
-		console.log(currentHead.y);
-		console.log(foodX);
-		console.log(foodY);
 		if(currentHead.x === foodX && currentHead.y === foodY)
 		{
+			++this.numItemsEaten;
+			if(this.numItemsEaten > bestScore)
+			{
+				bestScore = this.numItemsEaten;
+			}
 			return true;
 		}
 		else
@@ -91,15 +93,28 @@ function snake()
 	}
 	this.crashed = function()
 	{
+		var crashed = false
 		var currentHead = this.getHead();
-		if(currentHead.x >= 20 || currentHead.x <= 0 || currentHead.y >= 20 || currentHead.y <= 0)
+		if(currentHead.x > 19 || currentHead.x < 0 || currentHead.y > 19 || currentHead.y < 0)
 		{
-			return true;
+			this.numItemsEaten = 0;
+			crashed = true;
 		}
-		else
+		for(var i=0; i<this.bodyParts.length; ++i)
 		{
-			return false;
+			for(var j=0; j<this.bodyParts.length; ++j)
+			{
+				if(i===j)
+				{
+					continue;
+				}
+				if(this.bodyParts[i].x === this.bodyParts[j].x && this.bodyParts[i].y === this.bodyParts[j].y)
+				{
+					crashed = true;
+				}
+			}
 		}
+		return crashed;
 	};
 }
 function field()
@@ -108,8 +123,12 @@ function field()
 	this.drawSomething = function(className, x, y)
 	{
 		var $newThing = $("<div></div>").addClass(className);
-		$newThing.css("left",x*25+"px");
-		$newThing.css("top",y*25+"px");
+		if(className === "bodyPart")
+		{
+			$newThing.html("Rafa's Pen0r");
+		}
+		$newThing.css("left",(x)*25+"px");
+		$newThing.css("top",(y)*25+"px");
 		$("#gameBoard").append($newThing);
 	};
 	this.hasFood = function()
@@ -140,79 +159,118 @@ function field()
 
 function endPreviousGame()
 {
-	field.clearEntireField();
+	playingField.clearEntireField();
 }
 function drawSnake()
 {
-	field.removeOnlySnake();
-	var snakeBody = snake.bodyParts;
+	playingField.removeOnlySnake();
+	var snakeBody = playingSnake.bodyParts;
 	for(var i=0; i<snakeBody.length; ++i)
 	{
-		field.drawSomething('bodyPart', snakeBody[i].x, snakeBody[i].y);
+		playingField.drawSomething("bodyPart", snakeBody[i].x, snakeBody[i].y);
 	}
 }
 function createFood()
 {
 	foodX = Math.floor((Math.random()*500)/25);
 	foodY = Math.floor((Math.random()*500)/25);
-	field.drawSomething('food', foodX, foodY);
-	field.numFood++;
+	playingField.drawSomething('food', foodX, foodY);
+	playingField.numFood++;
 	currentFoodItem.x = foodX;
 	currentFoodItem.y = foodY;
 }
-var gameExecutor;
+var directionToMoveIn;
+var beginning;
 function initializeGame()
 {
-	field = new field();
-	snake = new snake();
+	playingField = new field();
+	playingSnake = new snake();
 	drawSnake();
 	createFood();
+	directionToMoveIn = right;
+	beginning = true;
 }
-
-function move(keyPressed)
+function endGame()
 {
-	snake.move(keyPressed);
+	playingField.clearEntireField();
+}
+function updateScore()
+{
+	$("#currentScore").html(playingSnake.numItemsEaten);
+	$("#bestScore").html(bestScore);
 }
 
+function showStartScreen()
+{
+	$("#gameBoard").css("opacity","0.5");
+	$("#gameBoard").append($("<div>Press start to begin!</div>").addClass("startMessage"));
+}
+function removeStartScreen()
+{
+	$("#gameBoard").css("opacity", "");
+	$(".startMessage").css("display", "none");
+}
+var previousDirection;
 $(document).ready(function(){
-	var directionToMoveIn = right;
+	showStartScreen();
 	initializeGame();
-	var keys = {};
-	$(document).keydown(function(key){
-		directionToMoveIn = key.which;
-	});
 	function gameLoop()
 	{
+		$(document).keydown(function(key){
+			directionToMoveIn = key.which;
+		});
+		if(beginning === true)
+		{
+			if(directionToMoveIn === space)
+			{
+				beginning = false;
+				directionToMoveIn = right;
+				removeStartScreen();
+			}
+		}
+		if(beginning === false)
+		{
 			if(directionToMoveIn === left)
 			{
-				move(left);
+				playingSnake.move(left);
+				previousDirection = directionToMoveIn;
 			}
 			else if(directionToMoveIn === right)
 			{
-				move(right);
+				playingSnake.move(right);
+				previousDirection = directionToMoveIn;
 			}
 			else if(directionToMoveIn === up)
 			{
-				move(up);
+				playingSnake.move(up);
+				previousDirection = directionToMoveIn;
 			}
 			else if(directionToMoveIn === down)
 			{
-				move(down);
+				playingSnake.move(down);
+				previousDirection = directionToMoveIn;
 			}
-			drawSnake();
-			if(snake.crashed())
+			else
 			{
-				field.clearEntireField();
-				initializeGame();
+				playingSnake.move(previousDirection);
 			}
-			if(snake.ateFood(currentFoodItem.x, currentFoodItem.y))
-			{
-				field.removeOnlyFood();
-				snake.addBodyPartToTail();
-				createFood();
-			}
-			setTimeout(gameLoop, 190);
+		}
+		drawSnake();
+		if(playingSnake.crashed())
+		{
+			updateScore();
+			endGame();
+			showStartScreen();
+			initializeGame();
+		}
+		if(playingSnake.ateFood(currentFoodItem.x, currentFoodItem.y))
+		{
+			playingField.removeOnlyFood();
+			playingSnake.addBodyPartToTail();
+			updateScore();
+			createFood();
+		}
+		setTimeout(gameLoop, 190);
 	}
 	gameLoop();
-	$(document).focus();
 });

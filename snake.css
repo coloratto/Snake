@@ -1,41 +1,48 @@
 #game {
-	width: 500px;
+	width: 700px;
+	top: 0px;
+	left: 0px;
+	position: fixed;
 }
 #gameBoard {
 	height: 500px;
 	width: inherit;
 	background-color: #ffcb05;
-	border: 8px groove #00274c;
+	border: 1px groove #00274c;
 }
 #gameInfo {
-	height: 200px;
-	width: inherit;
+	height: 500px;
+	width: 200px;
 	background-color: #ffcb05;
-	border: 8px groove #00274c;
+	border: 1px groove #00274c;
 	border-top: none;
-	float: bottom;
 	text-align: center;
 	font-family: "Papyrus";
 	font-size: 24px;
 	font-weight: bold;
-}
-#gameMessage {
-	display: none;
+	position: fixed;
+	top: 0px;
+	left: 500px;
 }
 
-#bodyPart {
-	height: 25px;
-	width: 25px;
-	position: absolute;
-	left: 100px;
-	background-color: #00274c;
-}
 
 .bodyPart {
 	height: 25px;
 	width: 25px;
 	position: absolute;
 	background-color: #00274c;
+	color: red;
+	font-size: 10px;
+	text-align: center;
+}
+.initialBodyPart {
+	height: 25px;
+	width: 25px;
+	position: absolute;
+	background-color: #00274c;
+	color: red;
+	font-size: 10px;
+	text-align: center;
 }
 
 .food {
@@ -43,4 +50,9 @@
 	width: 25px;
 	position: absolute;
 	background-color: #00274c;
+}
+
+.startMessage {
+	font-family: "Papyrus";
+	text-align: center;
 }
