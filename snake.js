@@ -123,10 +123,10 @@ function field()
 	this.drawSomething = function(className, x, y)
 	{
 		var $newThing = $("<div></div>").addClass(className);
-		if(className === "bodyPart")
+		/*if(className === "bodyPart")
 		{
 			$newThing.html("Rafa's Pen0r");
-		}
+		}*/
 		$newThing.css("left",(x)*25+"px");
 		$newThing.css("top",(y)*25+"px");
 		$("#gameBoard").append($newThing);
