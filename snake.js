@@ -249,6 +249,7 @@ $(document).ready(function(){
 				console.log(speed);
 				beginning = false;
 				directionToMoveIn = right;
+				previousDirection = right;
 				removeStartScreen();
 			}
 		}
@@ -256,23 +257,51 @@ $(document).ready(function(){
 		{
 			if(directionToMoveIn === left)
 			{
-				playingSnake.move(left);
-				previousDirection = directionToMoveIn;
+				if(previousDirection !== right)
+				{
+					playingSnake.move(left);
+					previousDirection = directionToMoveIn;
+				}
+				else
+				{
+					playingSnake.move(previousDirection);
+				}
 			}
 			else if(directionToMoveIn === right)
 			{
-				playingSnake.move(right);
-				previousDirection = directionToMoveIn;
+				if(previousDirection !== left)
+				{
+					playingSnake.move(right);
+					previousDirection = directionToMoveIn;
+				}
+				else
+				{
+					playingSnake.move(previousDirection);
+				}
 			}
 			else if(directionToMoveIn === up)
 			{
-				playingSnake.move(up);
-				previousDirection = directionToMoveIn;
+				if(previousDirection !== down)
+				{
+					playingSnake.move(up);
+					previousDirection = directionToMoveIn;
+				}
+				else
+				{
+					playingSnake.move(previousDirection);
+				}
 			}
 			else if(directionToMoveIn === down)
 			{
-				playingSnake.move(down);
-				previousDirection = directionToMoveIn;
+				if(previousDirection !== up)
+				{
+					playingSnake.move(down);
+					previousDirection = directionToMoveIn;
+				}
+				else
+				{
+					playingSnake.move(previousDirection);
+				}
 			}
 			else
 			{
