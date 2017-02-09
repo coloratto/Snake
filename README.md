@@ -1,4 +1,4 @@
 Snake
 =====
 
-My own version of the Snake game
+My own version of the classic Snake game
